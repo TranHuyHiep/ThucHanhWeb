@@ -27,6 +27,13 @@ namespace ThucHanhWebMVC.Controllers
             return View();
         }
 
+        public IActionResult SanPhamTheoLoai(string maLoai)
+        {
+            List<TDanhMucSp> lstsanpham = db.TDanhMucSps.Where(x => x.MaLoai == maLoai).OrderBy(x => x.TenSp).ToList();
+            return View(lstsanpham);
+        }
+
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
