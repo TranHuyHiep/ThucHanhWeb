@@ -8,8 +8,45 @@
         <ul>
             @foreach(var item in Model)
             {
-                <li><a asp-controller="home" asp-action="sanphamtheoloai" asp-route-maloai="@item.MaLoai">@item.Loai</a></li>
+                var getUrl = "https://localhost:44384/api/productapi/" + item.MaLoai.Trim();
+                <li><a style="cursor:pointer" onclick="showProductByCategory('@getUrl')">@item.Loai</a></li>
             }
         </ul>
     </div>
 </div>
+<script>
+    function showProductByCategory(getUrl) {
+        var str = '';
+        $.ajax({
+            type: 'GET',
+            url: getUrl,
+            dataType: 'json',
+            success: function (data) {
+                $.each(data, function (key, val) {
+                    var linkImage = "../ProductImages/" + val.anhDaiDien.trim();
+                    str += `
+                        <div class="col-lg-3 col-md-4 col-sm-6 mix vegetables fastfood">
+                            <div class="featured__item">
+                                        <div class="featured__item__pic set-bg" data-setbg="${linkImage}" 
+                                        style = "background-image: url(&quot;${linkImage}&quot;)">
+                                    <ul class="featured__item__pic__hover">
+                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                    </ul>
+                                </div>
+                                <div class="featured__item__text">
+                                    <h6><a href="#">${val.tenSp}</a></h6>
+                                        <h5>${val.giaNhoNhat}</h5>
+                                </div>
+                            </div>
+                        </div>`;
+                });
+                $('#displayProducts').html(str);
+            },
+            error: function (er) {
+                alert(er.responseText);
+            }
+        });
+    }
+</script>

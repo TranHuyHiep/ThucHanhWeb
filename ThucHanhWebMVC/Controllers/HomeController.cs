@@ -17,9 +17,15 @@ namespace ThucHanhWebMVC.Controllers
         public IActionResult Index()
         {
             var lstsanpham = db.TDanhMucSps.ToList();
-
-
             return View(lstsanpham);
+        }
+
+        public IActionResult ChiTietSanPham(string maSp)
+        {
+            var sanPham = db.TDanhMucSps.SingleOrDefault(x => x.MaSp == maSp);
+            var anhSanPhams = db.TDanhMucSps.Where(x => x.MaSp == maSp).ToList();
+            ViewBag.anhSanPhams = anhSanPhams;
+            return View(sanPham);
         }
 
         public IActionResult Privacy()
